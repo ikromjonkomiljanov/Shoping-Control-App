@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biznes Boshqaruv — Kiyim Do'koni & Seh</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══════════════════════════════════ SIDEBAR ══════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-badge">
+        <div class="logo-icon">👔</div>
+        <div>
+          <div class="logo-text">Do'kon: Ikromjon K.</div>
+          <div class="logo-sub">Kiyim Do'koni & Seh</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Bosh sahifa</div>
+      <div class="nav-item active" data-page="dashboard">
+        <span class="nav-icon">🏠</span> Dashboard
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Seh: (Branch)</div>
+      <div class="nav-item" data-page="workshop">
+        <span class="nav-icon">🔨</span> Seh (Workshop)
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Harakatlar</div>
+      <div class="nav-item" data-page="transfer">
+        <span class="nav-icon">📦</span> Do'konga yuborish
+      </div>
+      <div class="nav-item" data-page="shop">
+        <span class="nav-icon">🏪</span> Do'kon (Sotuv)
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Tahlil</div>
+      <div class="nav-item" data-page="reports">
+        <span class="nav-icon">📊</span> Hisobotlar
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="reset-btn" id="btn-reset">🗑 Ma'lumotlarni tozalash</button>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════ MAIN ═════════════════════════════ -->
+  <main class="main">
+
+    <!-- ─── DASHBOARD ──────────────────────────────────────────────────────── -->
+    <section id="page-dashboard" class="page active">
+      <div class="page-header">
+        <div class="page-title">🏠 Dashboard</div>
+        <div class="page-sub">Umumiy ko'rinish — bugungi holat</div>
+      </div>
+
+      <div class="welcome-banner section-gap">
+        <div class="welcome-emoji">👔</div>
+        <div class="welcome-text">
+          <h2>Xush kelibsiz!</h2>
+          <p>Kiyim do'koni va seh boshqaruv tizimi. Ishlab chiqaring, yuboring, soting.</p>
+        </div>
+      </div>
+
+      <!-- Flow diagram -->
+      <div class="flow-arrow section-gap">
+        <div class="flow-box">🔨 Seh</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-box">📦 Yuborish</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-box">🏪 Do'kon</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-box">💰 Sotuv</div>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid-3 section-gap">
+        <div class="stat-card">
+          <div class="stat-icon blue">🔨</div>
+          <div>
+            <div class="stat-value" id="dash-produced">0</div>
+            <div class="stat-label">Jami ishlab chiqarilgan</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple">📦</div>
+          <div>
+            <div class="stat-value" id="dash-transferred">0</div>
+            <div class="stat-label">Jami yuborilgan</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">💰</div>
+          <div>
+            <div class="stat-value" id="dash-sold">0</div>
+            <div class="stat-label">Jami sotilgan</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon yellow">🏪</div>
+          <div>
+            <div class="stat-value" id="dash-shop-stock">0</div>
+            <div class="stat-label">Do'kon inventar</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange">🏭</div>
+          <div>
+            <div class="stat-value" id="dash-workshop-stock">0</div>
+            <div class="stat-label">Seh inventar</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue">📅</div>
+          <div>
+            <div class="stat-value" id="dash-today-sold">0</div>
+            <div class="stat-label">Bugun sotilgan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent activity -->
+      <div class="card">
+        <div class="card-title">📋 So'nggi harakatlar</div>
+        <div id="dash-recent-logs"></div>
+      </div>
+    </section>
+
+    <!-- ─── WORKSHOP ────────────────────────────────────────────────────────── -->
+    <section id="page-workshop" class="page">
+      <div class="page-header">
+        <div class="page-title">🔨 Seh (Workshop)</div>
+        <div class="page-sub">Mahsulot ishlab chiqarish va materiallar</div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" data-pane="tab-produce">➕ Ishlab chiqarish</div>
+        <div class="tab" data-pane="tab-materials">🧵 Materiallar</div>
+        <div class="tab" data-pane="tab-ws-inventory">📦 Inventar</div>
+      </div>
+
+      <!-- TAB: Produce -->
+      <div class="tab-pane active" id="tab-produce">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">🔨 Yangi mahsulot ishlab chiqarish</div>
+
+            <div class="form-group">
+              <label class="form-label">Mahsulot turi</label>
+              <select id="produce-product"></select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Miqdor (dona)</label>
+              <input type="number" id="produce-qty" min="1" placeholder="Masalan: 10" />
+            </div>
+
+            <button class="btn btn-primary btn-full" id="btn-produce">
+              🔨 Ishlab chiqarish
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">📊 Seh inventari</div>
+            <div id="workshop-inventory-table"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Materials -->
+      <div class="tab-pane" id="tab-materials">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">➕ Material qo'shish</div>
+
+            <div class="form-group">
+              <label class="form-label">Material turi</label>
+              <select id="material-type"></select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Miqdor (metr / dona)</label>
+              <input type="number" id="material-qty" min="1" placeholder="Masalan: 50" />
+            </div>
+
+            <button class="btn btn-yellow btn-full" id="btn-add-material">
+              ➕ Material qo'shish
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🧵 Material inventari</div>
+            <div id="material-inventory-table"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: WS Inventory -->
+      <div class="tab-pane" id="tab-ws-inventory">
+        <div class="card">
+          <div class="card-title">📦 Seh mahsulotlari (to'liq)</div>
+          <div id="workshop-inventory-table-full"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── TRANSFER ────────────────────────────────────────────────────────── -->
+    <section id="page-transfer" class="page">
+      <div class="page-header">
+        <div class="page-title">📦 Do'konga yuborish</div>
+        <div class="page-sub">Sehdan do'konga mahsulot yuborish</div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:22px">
+        <div class="card">
+          <div class="card-title">📦 Mahsulot yuborish</div>
+
+          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:16px;font-size:13px;color:var(--text2);">
+            <strong style="color:var(--text)">Qanday ishlaydi:</strong><br>
+            Sehdan kerakli mahsulotni tanlang → miqdor kiriting → "Do'konga yuborish" tugmasini bosing.
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Mahsulot (Sehdan)</label>
+            <select id="transfer-product"></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Miqdor (dona)</label>
+            <input type="number" id="transfer-qty" min="1" placeholder="Masalan: 5" />
+          </div>
+
+          <div style="background:var(--primary-dim);border:1px solid var(--primary-dim);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:14px;font-size:13px;color:var(--primary);display:flex;align-items:center;gap:8px;">
+            📍 Manzil: <strong>Do'kon</strong>
+          </div>
+
+          <button class="btn btn-primary btn-full" id="btn-transfer">
+            📦 Do'konga yuborish
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔄 O'tkazish tarixi</div>
+          <div id="transfer-logs"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── SHOP ────────────────────────────────────────────────────────────── -->
+    <section id="page-shop" class="page">
+      <div class="page-header">
+        <div class="page-title">🏪 Do'kon</div>
+        <div class="page-sub">Sotuv va do'kon inventari</div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" data-pane="tab-sell">💰 Sotuv</div>
+        <div class="tab" data-pane="tab-shop-inventory">📦 Inventar</div>
+        <div class="tab" data-pane="tab-sale-history">📋 Sotuv tarixi</div>
+      </div>
+
+      <!-- TAB: Sell -->
+      <div class="tab-pane active" id="tab-sell">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">💰 Mahsulot sotish</div>
+
+            <div class="form-group">
+              <label class="form-label">Mahsulot</label>
+              <select id="sell-product"></select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Miqdor (dona)</label>
+              <input type="number" id="sell-qty" min="1" placeholder="Masalan: 2" />
+            </div>
+
+            <button class="btn btn-green btn-full" id="btn-sell">
+              💰 Sotish
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">📦 Do'kon inventari (qisqacha)</div>
+            <div id="shop-inventory-table"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Inventory -->
+      <div class="tab-pane" id="tab-shop-inventory">
+        <div class="card">
+          <div class="card-title">📦 Do'kon inventari (to'liq)</div>
+          <div id="shop-inventory-full"></div>
+        </div>
+      </div>
+
+      <!-- TAB: Sale History -->
+      <div class="tab-pane" id="tab-sale-history">
+        <div class="card">
+          <div class="card-title">📋 Sotuv tarixi</div>
+          <div id="sale-logs"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── REPORTS ─────────────────────────────────────────────────────────── -->
+    <section id="page-reports" class="page">
+      <div class="page-header">
+        <div class="page-title">📊 Hisobotlar</div>
+        <div class="page-sub">Umumiy statistika va tahlil</div>
+      </div>
+
+      <!-- Summary stats -->
+      <div class="grid-4 section-gap">
+        <div class="stat-card">
+          <div class="stat-icon blue">🔨</div>
+          <div>
+            <div class="stat-value" id="rpt-produced">0</div>
+            <div class="stat-label">Jami ishlab chiqarilgan</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple">📦</div>
+          <div>
+            <div class="stat-value" id="rpt-transferred">0</div>
+            <div class="stat-label">Jami yuborilgan</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">💰</div>
+          <div>
+            <div class="stat-value" id="rpt-sold">0</div>
+            <div class="stat-label">Jami sotilgan</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon yellow">📅</div>
+          <div>
+            <div class="stat-value" id="rpt-today-sold">0</div>
+            <div class="stat-label">Bugun sotilgan</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2 section-gap">
+        <!-- Chart -->
+        <div class="card">
+          <div class="card-title">📊 Mahsulot bo'yicha sotuv</div>
+          <div id="sales-chart"></div>
+        </div>
+
+        <!-- Today stats -->
+        <div class="card">
+          <div class="card-title">📅 Bugungi ko'rsatkichlar</div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px">
+            <div class="stat-card" style="border:none;padding:14px;background:var(--bg3)">
+              <div class="stat-icon green">💰</div>
+              <div>
+                <div class="stat-value" id="rpt-today-sold-2" style="font-size:20px"></div>
+                <div class="stat-label">Bugun sotilgan mahsulot</div>
+              </div>
+            </div>
+            <div class="stat-card" style="border:none;padding:14px;background:var(--bg3)">
+              <div class="stat-icon blue">🔨</div>
+              <div>
+                <div class="stat-value" id="rpt-today-produced" style="font-size:20px"></div>
+                <div class="stat-label">Bugun ishlab chiqarilgan</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full log -->
+      <div class="card">
+        <div class="card-title">📋 Barcha harakatlar (so'nggi 30)</div>
+        <div id="all-logs"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast-container"></div>
+
+<script src="storage.js"></script>
+<script src="app.js"></script>
+<script src="ui.js"></script>
+
+<!-- Wire up today-sold-2 in reports -->
+<script>
+  // Patch: sync rpt-today-sold-2 when renderReports runs
+  const _orig = document.addEventListener;
+  document.addEventListener('DOMContentLoaded', () => {
+    const origRenderReports = UI;
+    // Patch today sold second element after render
+    const observer = new MutationObserver(() => {
+      const v = document.getElementById('rpt-today-sold');
+      const v2 = document.getElementById('rpt-today-sold-2');
+      if (v && v2 && v.textContent !== v2.textContent) {
+        v2.textContent = v.textContent;
+      }
+    });
+    observer.observe(document.getElementById('page-reports'), { childList: true, subtree: true, characterData: true });
+  });
+</script>
+</body>
+</html>
