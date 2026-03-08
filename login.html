@@ -127,7 +127,22 @@
         border: 1px solid var(--border);
       }
 
-      #admin-pass,
+      #admin-pass {
+        width: 100%;
+        padding: 10px 13px;
+        background: var(--canvas);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--ink);
+        font-size: 14px;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+        outline: none;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
       #worker-pass {
         width: 100%;
         padding: 10px 13px;
