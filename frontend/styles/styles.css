@@ -1676,6 +1676,17 @@ textarea {
   .toast {
     max-width: 100%;
   }
+
+  .topbar-date {
+    display: none;
+  }
+  .topbar-right {
+    gap: 6px;
+  }
+  .topbar-right .btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 }
 
 /* ── 380px — very small phones ───────────────────────────────── */
@@ -1689,6 +1700,10 @@ textarea {
   .task-meta {
     flex-direction: column;
     gap: 4px;
+  }
+
+  .topbar-user-name {
+    display: none;
   }
 }
 
@@ -1735,3 +1750,4 @@ textarea {
   border: 1px solid rgba(52, 211, 153, 0.3);
   margin-top: 6px;
 }
+
