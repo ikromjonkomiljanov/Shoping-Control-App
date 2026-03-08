@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BiznesApp — Ishchi Panel</title>
+  <link rel="stylesheet" href="styles/styles.css"/>
+  <style>
+    /* Worker-specific overrides */
+    .sidebar { background: #0f4c2a; }
+    .sidebar .nav-item.active { background: rgba(52,211,153,.18); color: #6ee7b7; }
+    .sidebar .nav-item:hover  { background: rgba(255,255,255,.07); }
+    .sidebar .nav-section-label { color: rgba(255,255,255,.3); }
+    .brand-gem { background: linear-gradient(135deg, #059669, #0d9488); }
+
+    .worker-badge {
+      display: inline-block;
+      background: var(--green-lt);
+      color: var(--green);
+      font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
+      border: 1px solid var(--green);
+      margin-top: 6px;
+    }
+
+    .task-big-btn {
+      width: 100%; padding: 16px;
+      font-size: 15px; font-weight: 700;
+      border-radius: var(--radius);
+      border: none; cursor: pointer;
+      font-family: var(--font);
+      background: var(--green); color: #fff;
+      transition: all .15s;
+    }
+    .task-big-btn:hover { background: #047857; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(5,150,105,.35); }
+
+    /* No-access notice */
+    .no-access {
+      text-align: center; padding: 60px 20px;
+      color: var(--ink3);
+    }
+    .no-access-icon { font-size: 48px; margin-bottom: 14px; }
+    .no-access h3 { font-size: 18px; color: var(--ink2); margin-bottom: 8px; }
+    .no-access p { font-size: 13.5px; max-width: 300px; margin: 0 auto; line-height: 1.7; }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- ═══════════════════════ SIDEBAR ═══════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">
+        <div class="brand-gem">🔨</div>
+        <div>
+          <div class="brand-name">BiznesApp</div>
+          <div class="brand-tagline">Ishchi panel v4</div>
+        </div>
+      </div>
+      <div id="worker-group-name" class="worker-badge">—</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Ish joyim</div>
+      <div class="w-nav-item nav-item active" data-page="w-dashboard"><span class="nav-icon">🏠</span> Dashboard</div>
+      <div class="w-nav-item nav-item" data-page="w-tasks"><span class="nav-icon">📋</span> Topshiriqlarim</div>
+
+      <div class="nav-section-label" style="margin-top:6px">Seh</div>
+      <div class="w-nav-item nav-item" data-page="w-workshop"><span class="nav-icon">📦</span> Seh inventari</div>
+      <div class="w-nav-item nav-item" data-page="w-materials"><span class="nav-icon">🧵</span> Materiallar</div>
+
+      <div class="nav-section-label" style="margin-top:6px">Kirish yo'q</div>
+      <div class="nav-item" style="opacity:.35;cursor:not-allowed" title="Admin huquqi kerak">
+        <span class="nav-icon">🏪</span> Do'kon & Sotuv
+      </div>
+      <div class="nav-item" style="opacity:.35;cursor:not-allowed" title="Admin huquqi kerak">
+        <span class="nav-icon">📊</span> Hisobotlar
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-sidebar-action" onclick="logoutWorker()">↩ Tizimdan chiqish</button>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════ MAIN ═══════════════════════════ -->
+  <div class="main-wrapper">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div>
+          <div class="topbar-page-name" id="topbar-name">Dashboard</div>
+          <div class="topbar-page-sub" id="topbar-sub">Umumiy ko'rinish</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbar-date">—</div>
+        <span id="topbar-user" style="font-size:12px;color:var(--green);background:var(--green-lt);padding:5px 12px;border-radius:20px;border:1px solid var(--green)"></span>
+        <button class="btn btn-sm btn-ghost" onclick="logoutWorker()">↩ Chiqish</button>
+      </div>
+    </div>
+
+    <main class="main">
+
+      <!-- ═══ WORKER DASHBOARD ═══ -->
+      <section id="page-w-dashboard" class="w-page page active">
+
+        <div class="dash-banner section-gap" style="background:linear-gradient(135deg, #065f46 0%, #0f4c2a 100%)">
+          <div class="banner-emoji">🔨</div>
+          <div>
+            <div class="banner-title">Xush kelibsiz!</div>
+            <div class="banner-sub">Guruhingizning ishlab chiqarish paneli</div>
+            <div class="banner-actions">
+              <button class="btn-banner" onclick="navigate('w-tasks')">📋 Topshiriqlarim</button>
+              <button class="btn-banner" onclick="navigate('w-workshop')">📦 Seh inventari</button>
+              <button class="btn-banner" onclick="navigate('w-materials')">🧵 Materiallar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="g3 section-gap" id="w-dash-stats"></div>
+
+        <div class="card">
+          <div class="card-title">📋 Faol topshiriqlar</div>
+          <div id="w-dash-active"></div>
+        </div>
+
+      </section>
+
+      <!-- ═══ TASKS ═══ -->
+      <section id="page-w-tasks" class="w-page page">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+          <div>
+            <div style="font-family:var(--font-display);font-size:16px;font-weight:700">📋 Mening topshiriqlarim</div>
+            <div style="font-size:12px;color:var(--ink3);margin-top:3px">Faqat guruhingizga tegishli topshiriqlar</div>
+          </div>
+        </div>
+        <div id="w-tasks-list" style="display:grid;gap:14px"></div>
+      </section>
+
+      <!-- ═══ WORKSHOP INVENTORY ═══ -->
+      <section id="page-w-workshop" class="w-page page">
+        <div class="card">
+          <div class="card-title">📦 Seh inventari — Tayyor mahsulotlar</div>
+          <div class="info-box" style="margin-bottom:16px">
+            Bu yerda sehda tayyor bo'lgan mahsulotlar ko'rsatiladi.
+            Yangi mahsulot kiritish uchun "Topshiriqlarim" bo'limidan foydalaning.
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th></th><th>Mahsulot</th><th>Miqdor</th></tr></thead>
+              <tbody id="w-ws-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ MATERIALS ═══ -->
+      <section id="page-w-materials" class="w-page page">
+        <div class="card">
+          <div class="card-title">🧵 Xom ashyo va materiallar</div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th></th><th>Material</th><th>Birlik</th><th>Miqdor</th><th>Amal</th></tr></thead>
+              <tbody id="w-mat-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/auth.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/worker.js"></script>
+
+<script>
+// Mobile sidebar toggle
+(function () {
+  var sidebar  = document.querySelector('.sidebar');
+  var backdrop = document.getElementById('sidebar-backdrop');
+  var btn      = document.getElementById('hamburger-btn');
+  function open()  { sidebar.classList.add('open');    backdrop.classList.add('visible');    document.body.style.overflow = 'hidden'; }
+  function close() { sidebar.classList.remove('open'); backdrop.classList.remove('visible'); document.body.style.overflow = ''; }
+  if (btn)      btn.addEventListener('click', function () { sidebar.classList.contains('open') ? close() : open(); });
+  if (backdrop) backdrop.addEventListener('click', close);
+  document.querySelectorAll('.w-nav-item').forEach(function (item) {
+    item.addEventListener('click', function () { if (window.innerWidth <= 768) close(); });
+  });
+})();
+</script>
+
+</body>
+</html>

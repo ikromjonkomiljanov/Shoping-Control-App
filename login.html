@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BiznesApp — Kirish</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+    <style>
+      /* ── Login page override ─────────────────────────────── */
+      body {
+        background: var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      .login-shell {
+        width: 100%;
+        max-width: 440px;
+        padding: 16px;
+      }
+
+      .login-brand {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .login-gem {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #4f8ef7, #7c3aed);
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        font-size: 30px;
+        margin: 0 auto 14px;
+        box-shadow: 0 8px 32px rgba(79, 142, 247, 0.4);
+      }
+      .login-title {
+        font-family: var(--font-display);
+        font-size: 26px;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.5px;
+      }
+      .login-sub {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-top: 4px;
+      }
+
+      .login-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        padding: 28px 28px 24px;
+        box-shadow: var(--shadow-lg);
+      }
+
+      /* Role tabs */
+      .role-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+      .role-tab {
+        padding: 14px 10px;
+        border-radius: var(--radius);
+        border: 2px solid var(--border);
+        background: var(--canvas);
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.15s;
+        user-select: none;
+      }
+      .role-tab:hover {
+        border-color: var(--blue);
+        background: var(--blue-lt);
+      }
+      .role-tab.active {
+        border-color: var(--blue);
+        background: var(--blue-lt);
+      }
+      .role-tab-icon {
+        font-size: 28px;
+        margin-bottom: 6px;
+      }
+      .role-tab-label {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .role-tab-sub {
+        font-size: 11px;
+        color: var(--ink3);
+        margin-top: 2px;
+      }
+
+      /* Form panels */
+      .login-form {
+        display: none;
+      }
+      .login-form.active {
+        display: block;
+      }
+
+      .login-form-title {
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .login-hint {
+        font-size: 12px;
+        color: var(--ink3);
+        background: var(--canvas2);
+        border-radius: var(--radius-sm);
+        padding: 8px 12px;
+        margin-top: 14px;
+        border: 1px solid var(--border);
+      }
+
+      #admin-pass {
+        width: 100%;
+        padding: 10px 13px;
+        background: var(--canvas);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--ink);
+        font-size: 14px;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+        outline: none;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      .btn-login {
+        width: 100%;
+        padding: 14px;
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: var(--radius);
+        border: none;
+        cursor: pointer;
+        font-family: var(--font);
+        transition: all 0.15s;
+        margin-top: 16px;
+      }
+      .btn-login-admin {
+        background: var(--blue);
+        color: #fff;
+      }
+      .btn-login-admin:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      }
+      .btn-login-worker {
+        background: var(--green);
+        color: #fff;
+      }
+      .btn-login-worker:hover {
+        background: #047857;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+      }
+
+      .login-error {
+        background: var(--red-lt);
+        border: 1px solid var(--red);
+        color: var(--red);
+        border-radius: var(--radius-sm);
+        padding: 10px 14px;
+        font-size: 13px;
+        font-weight: 500;
+        margin-top: 12px;
+        display: none;
+      }
+      .login-error.visible {
+        display: block;
+      }
+
+      .login-footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.25);
+      }
+
+      /* Password toggle */
+      .pw-wrap {
+        position: relative;
+      }
+      .pw-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: var(--ink3);
+        padding: 0;
+      }
+      .pw-wrap input {
+        padding-right: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-shell">
+      <div class="login-brand">
+        <div class="login-gem">👔</div>
+        <div class="login-title">BiznesApp</div>
+        <div class="login-sub">Kiyim sehi va do'koni boshqaruv tizimi</div>
+      </div>
+
+      <div class="login-card">
+        <!-- Role selector -->
+        <div class="role-tabs">
+          <div
+            class="role-tab active"
+            id="tab-admin"
+            onclick="selectRole('admin')"
+          >
+            <div class="role-tab-icon">🏢</div>
+            <div class="role-tab-label">Ish beruvchi</div>
+            <div class="role-tab-sub">Admin</div>
+          </div>
+          <div class="role-tab" id="tab-worker" onclick="selectRole('worker')">
+            <div class="role-tab-icon">👷</div>
+            <div class="role-tab-label">Xodim</div>
+            <div class="role-tab-sub">Guruh boshqaruvchi</div>
+          </div>
+        </div>
+
+        <!-- Admin form -->
+        <div class="login-form active" id="form-admin">
+          <div class="login-form-title">🔐 Admin kirish</div>
+          <div class="form-group">
+            <label class="form-label">Parol</label>
+            <div class="pw-wrap">
+              <input
+                type="password"
+                id="admin-pass"
+                placeholder="Admin parolini kiriting"
+                onkeydown="if (event.key === 'Enter') loginAdmin();"
+              />
+              <button class="pw-toggle" onclick="togglePw('admin-pass', this)">
+                👁
+              </button>
+            </div>
+          </div>
+          <div class="login-hint">
+            ℹ️ Standart parol: <strong>admin123</strong><br />
+            Kirganingizdan so'ng parolni o'zgartiring.
+          </div>
+          <button class="btn-login btn-login-admin" onclick="loginAdmin()">
+            🏢 Admin sifatida kirish
+          </button>
+          <div class="login-error" id="admin-error"></div>
+        </div>
+
+        <!-- Worker form -->
+        <div class="login-form" id="form-worker">
+          <div class="login-form-title">👷 Xodim kirish</div>
+          <div class="form-group">
+            <label class="form-label">Guruh nomi *</label>
+            <input
+              type="text"
+              id="worker-group"
+              placeholder="Masalan: A Guruh"
+              onkeydown="if (event.key === 'Enter') loginWorker();"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Guruh paroli *</label>
+            <div class="pw-wrap">
+              <input
+                type="password"
+                id="worker-pass"
+                placeholder="Guruh parolini kiriting"
+                onkeydown="if (event.key === 'Enter') loginWorker();"
+              />
+              <button class="pw-toggle" onclick="togglePw('worker-pass', this)">
+                👁
+              </button>
+            </div>
+          </div>
+          <div class="login-hint">
+            ℹ️ Guruh nomi va parolni admindan oling.<br />
+            Masalan: <strong>A Guruh</strong> / <strong>guruh1</strong>
+          </div>
+          <button class="btn-login btn-login-worker" onclick="loginWorker()">
+            👷 Xodim sifatida kirish
+          </button>
+          <div class="login-error" id="worker-error"></div>
+        </div>
+      </div>
+
+      <div class="login-footer">BiznesApp v4 · Kiyim boshqaruv tizimi</div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+      // Init
+      Auth.seedAdmin();
+      Storage.seed();
+
+      // If already logged in — redirect
+      if (Auth.isLoggedIn()) {
+        window.location.href = Auth.isAdmin() ? "admin.html" : "worker.html";
+      }
+
+      var currentRole = "admin";
+
+      function selectRole(role) {
+        currentRole = role;
+        document
+          .getElementById("tab-admin")
+          .classList.toggle("active", role === "admin");
+        document
+          .getElementById("tab-worker")
+          .classList.toggle("active", role === "worker");
+        document
+          .getElementById("form-admin")
+          .classList.toggle("active", role === "admin");
+        document
+          .getElementById("form-worker")
+          .classList.toggle("active", role === "worker");
+        document.getElementById("admin-error").classList.remove("visible");
+        document.getElementById("worker-error").classList.remove("visible");
+      }
+
+      function showError(id, msg) {
+        var el = document.getElementById(id);
+        el.textContent = "❌ " + msg;
+        el.classList.add("visible");
+        el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+
+      function loginAdmin() {
+        var pass = document.getElementById("admin-pass").value;
+        if (!pass) {
+          showError("admin-error", "Parolni kiriting");
+          return;
+        }
+        var r = Auth.loginAdmin(pass);
+        if (!r.ok) {
+          showError("admin-error", r.msg);
+          return;
+        }
+        window.location.href = "admin.html";
+      }
+
+      function loginWorker() {
+        var group = document.getElementById("worker-group").value.trim();
+        var pass = document.getElementById("worker-pass").value;
+        if (!group) {
+          showError("worker-error", "Guruh nomini kiriting");
+          return;
+        }
+        if (!pass) {
+          showError("worker-error", "Parolni kiriting");
+          return;
+        }
+        var r = Auth.loginWorker(group, pass);
+        if (!r.ok) {
+          showError("worker-error", r.msg);
+          return;
+        }
+        window.location.href = "worker.html";
+      }
+
+      function togglePw(inputId, btn) {
+        var inp = document.getElementById(inputId);
+        if (inp.type === "password") {
+          inp.type = "text";
+          btn.textContent = "🙈";
+        } else {
+          inp.type = "password";
+          btn.textContent = "👁";
+        }
+      }
+    </script>
+  </body>
+</html>
